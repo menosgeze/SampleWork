@@ -1,22 +1,28 @@
 """
-Contains data classes with for the particle swarm optimization.
+Dataclasses for the particle swarm optimization.
 """
+
 from __future__ import annotations
 from dataclasses import dataclass, field
 
 
 @dataclass
 class Particle:
-    """Defines the selection and objective."""
+    """Dataclass with attrs: `selection` tuple[int] and `objective` float."""
+
     selection: tuple = field(default_factory=tuple)
     objective: float | int = 0
 
 
 @dataclass
 class Swarm:
-    """Defines the swarm containing agents: particles, cognitive particles,
-    and social particle.
+    """Dataclass with attrs:
+    `agents` (list[Particle]),
+    `cognitive_agents` (list[Particle]),
+    `social_agent` (Particle)
+    `history` (dict)
     """
+
     all_items: list
     agents: list = field(default_factory=list)
     cognitive_agents: list = field(default_factory=list)

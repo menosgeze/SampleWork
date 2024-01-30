@@ -85,8 +85,8 @@ def generate_item_objectives(
 def generate_transfer_matrix(
     n_items: int,
     rng: np.random._generator.Generator,
-    loss_mean: float = 0.15,
-    loss_std: float = 0.03
+    mean_loss: float = 0.15,
+    std_loss: float = 0.03
  
 ):
     """Computes the transfer matrix T whose entry T[i][j]
@@ -120,8 +120,8 @@ def generate_transfer_matrix(
     return transfer_matrix
 
 def compute_selection_objective(
-    all_items: tuple, 
     items: Iterable,
+    all_items: tuple, 
     item_sizes: pd.DataFrame,
     initial_objectives: pd.DataFrame,
     transfer_matrix: np.array
@@ -142,8 +142,13 @@ def compute_selection_objective(
 
     Returns:
         (pd.DataFrame): with cols `item` (int) and `objective`.
-    """ 
+    """
+    if len(items) == 0:
+        return pd.DataFrame({'item': all_items}).assign(objective=0)
+
+
     objectives = {item: 0 for item in all_items}
+    print(objectives)
     transfering = np.zeros((len(all_items),))
     for index, row in initial_objectives.iterrows():
         if row['item'] in items:
@@ -156,8 +161,4 @@ def compute_selection_objective(
             objectives[row['item']] += transfering[index]
 
     return pd.DataFrame(objectives.items(), columns=['item', 'objective'])
-
-
-
-
 
