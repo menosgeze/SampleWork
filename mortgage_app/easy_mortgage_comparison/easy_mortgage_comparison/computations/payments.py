@@ -1,7 +1,7 @@
 from __future__ import annotations
 import numpy as np
 import pandas as pd
-from periods import Period
+from .constants import Period
 
 
 def compute_raw_payments(
@@ -122,3 +122,29 @@ def compute_monthly_payment(
     )[: len(payments)]
 
     return payments
+
+
+if __name__ == '__main__':
+    print("This is a sample result:")
+    pd.options.display.max_columns = 10
+
+    payments = compute_monthly_payment(
+        principal=140000,
+        yearly_rate=0.0225,
+        duration=180,
+        extra_payment=50,
+        extra_payment_period=Period.MONTH,
+        special_payment={
+            12: 5000,
+            24: 5000
+        },
+        initial_escrow=160,
+        escrow_growth_rate=0.01,
+        escrow_period=Period.YEAR,
+    )
+
+    print(payments.head(5))
+
+    print('...')
+
+    print(payments.tail(5))
